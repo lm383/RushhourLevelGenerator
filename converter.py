@@ -33,36 +33,43 @@ def make_file(linesBoard, boardId):
     #print(linesBoard)
     boardSize = linesBoard.__sizeof__()
     boardSize = boardSize.__str__() + "x"+ boardSize.__str__()
+
+    max = 0
+    # finds the max vehicle and adds 1 so that will be the vehicle id for the current vehicle '0'
+    for line in linesBoard:
+        #print(linesBoard.__str__())
+        for element in line:
+            #print(line.__str__())
+            if element.isnumeric() and max<int(element):
+                max = int(element)
+    max+=1
     for count in linesBoard:
-        completeBoard.append(process_file(count))
-    print(completeBoard.__str__()+ "  P")
-    with open("boards\\board"+boardSize+"_"+boardId.__str__()+".csv", "w") as csvFile:
+        completeBoard.append(process_file(count, max.__str__()))
+    #print(completeBoard.__str__()+ "  P")
+    with open("boards\\board"+boardSize+"_"+boardId.__str__()+".csv", "w", newline='') as csvFile:
         write = csv.writer(csvFile)
-        write.writerows(completeBoard)
+        for count in completeBoard:
+            write.writerow(count)
+        #write.writerows(completeBoard)
     #csvFile.write(completeBoard.__str__())
     csvFile.close()
 
     return
 
-def process_file(unprocessedText):
+def process_file(unprocessedText, max):
     processed = []
-    found = False
-    max = 0
-    while(found):
-        if unprocessedText.contains(max.__str__()):
-            max+=1
-        else:
-            found = True
+    
     #print(unprocessedText.__str__()+ "U")
     for element in unprocessedText:
         if element == ".":
             processed.append( "-1")
+        elif element == '0':
+            #print(max)
+            processed.append(max)
         elif element == ',' or element == '\n':
-            element = "" # dont add it to processed
+            break # dont add it to processed
         elif element == 'r':
             processed.append("0")
-        elif element == '0':
-            processed.append(max.__str__())
         else:
             processed.append(element)
     #print(processed.__str__()+ "  P")
@@ -71,7 +78,7 @@ def process_file(unprocessedText):
 
 if __name__ == '__main__':
     # first open the txt file, read it and separate from the ',' while removing them 
-
+    print("converting sample_output.txt")
     read_file()
 
     print("Done!")

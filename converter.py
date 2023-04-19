@@ -8,7 +8,7 @@ the csv files should then be saved in the boards folder
 """
 import csv
 
-def read_file():
+def read_file(size):
     board = []
     text = open("sample_output.txt", "r")
     csvCount =0
@@ -17,8 +17,8 @@ def read_file():
         if count.__contains__(","):
             # end of board
             csvCount+=1
-            board.append(count)
-            make_file(board, csvCount)
+            #board.append(count)
+            make_file(board, csvCount, size)
             board.clear() 
             
 
@@ -27,11 +27,11 @@ def read_file():
     return 
 
 
-def make_file(linesBoard, boardId):
+def make_file(linesBoard, boardId, size):
     # gets 1 board line by line processes and saves it
     completeBoard = []
     #print(linesBoard)
-    boardSize = linesBoard.__sizeof__()
+    boardSize = size
     boardSize = boardSize.__str__() + "x"+ boardSize.__str__()
 
     max = 0
@@ -50,8 +50,6 @@ def make_file(linesBoard, boardId):
         write = csv.writer(csvFile)
         for count in completeBoard:
             write.writerow(count)
-        #write.writerows(completeBoard)
-    #csvFile.write(completeBoard.__str__())
     csvFile.close()
 
     return
@@ -79,7 +77,7 @@ def process_file(unprocessedText, max):
 if __name__ == '__main__':
     # first open the txt file, read it and separate from the ',' while removing them 
     print("converting sample_output.txt")
-    read_file()
+    read_file(9)
 
     print("Done!")
 
